@@ -12,7 +12,7 @@ The app allows multiple users to connect and chat in real-time, similar to Slack
 - Real-time communication using WebSockets
 - Multiple users can join and chat simultaneously
 - Clean React frontend (JavaScript, not TypeScript)
-- Backend built with **Actix Web (Rust)**
+- Backend built with **Actix Web (Rust)**along with the very popular **tokio & tungtenite**.
 - Scalable architecture for future improvements
 - Secure JWT-based authentication (planned)
 - Database integration for persistent chat history (planned)
