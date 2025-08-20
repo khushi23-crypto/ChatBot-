@@ -1,10 +1,27 @@
 [package]
-name = "backend"
+name = "ChatBot-"
 version = "0.1.0"
 edition = "2024"
 
-
 [dependencies]
-tokio = { version = "1", features = ["full"] }
-tokio-tungstenite = { version = "0.20.1", features = ["__rustls-tls"] }
-futures-util = "0.3.31"
+futures-util = "0.3.29"
+tokio = {version = "1.35.0",features = ["full"]}
+tokio-tungstenite = { version = "0.21.0",features=["native-tls"]}
+actix = "0.13"
+actix-web = "4"
+actix-web-actors = "4"
+uuid = { version = "1", features = ["v4"] }
+
+
+
+[[bin]]
+name = "main"       # server
+path = "src/main.rs"
+
+[[bin]]
+name = "socket1"    # client 1
+path = "src/socket1.rs"
+
+[[bin]]
+name = "socket2"    # client 2
+path = "src/socket2.rs"
