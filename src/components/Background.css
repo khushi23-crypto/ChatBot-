@@ -21,9 +21,20 @@
   z-index: 1;
   color: white;
   text-align: center;
-  top: 7%;
-  font-weight:500;
+  top: 45%;
+  font-weight: 500;
   font-size: larger;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   transform: translateY(-50%);
 }
+
+.video-section-buttons {
+  margin-top: 60px;
+}
+
+.video-section-buttons .btn {
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
