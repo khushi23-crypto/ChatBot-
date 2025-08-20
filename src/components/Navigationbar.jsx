@@ -7,8 +7,10 @@ import Button from 'react-bootstrap/Button';
 import React, { useState } from 'react';
 import Logo from "../images/chatbot.png";
 
+
 function Navigationbar(props) {
     const [darkMode, setDarkMode] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
     const toggleTheme = () => {
         setDarkMode(!darkMode);
         document.body.classList.toggle("bg-dark");
@@ -42,10 +44,42 @@ function Navigationbar(props) {
                         <Nav.Link href="https://github.com/khushi23-crypto/ChatBot-" target="_blank" rel="noopener noreferrer" className="fs-5" size={22}><FaGithub /></Nav.Link>
                         <Nav.Link href="#community" className=" fs-5" size={22}><FaUsers /></Nav.Link>
                         <Button variant={darkMode ? "light" : "dark"} size="sm" onClick={toggleTheme} > {darkMode ? <FaMoon /> : <FaSun />} </Button>
-                        <Button variant={darkMode ? "outline-light" : "outline-dark"} size="sm">Login</Button>
+                        <Button variant={darkMode ? "outline-light" : "outline-dark"} size="sm" onClick={() => setShowLogin(!showLogin)}>Login</Button>
                     </div>
                 </Container>
             </Navbar>
+            {showLogin && (
+                <div
+                    style={{
+                        position: "fixed",      // ✅ floating effect
+                        top: "100px",           // ✅ navbar se thoda niche
+                        right: "20px",          // ✅ screen ke right side
+                        width: "300px",
+                        padding: "15px",
+                        borderRadius: "10px",
+                        background: "rgba(255,255,255,0.1)", // ✅ light transparent
+                        backdropFilter: "blur(6px)",         // ✅ glassy floating effect
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                        zIndex: 1000
+                    }}
+                >
+
+                    <h5 className="text-center mb-3 text-white">Login</h5>
+                    <Form>
+                        <Form.Group className="mb-2 text-white">
+                            <Form.Label style={{ fontSize: "14px" }}>Email</Form.Label>
+                            <Form.Control type="email" size="sm" placeholder="Enter email" />
+                        </Form.Group>
+                        <Form.Group className="mb-3 text-white">
+                            <Form.Label style={{ fontSize: "14px" }}>Password</Form.Label>
+                            <Form.Control type="password" size="sm" placeholder="Enter password" />
+                        </Form.Group>
+                        <Button variant="primary" type="submit" className="w-100 btn-sm">
+                            Login
+                        </Button>
+                    </Form>
+                </div>
+            )}
         </>
     );
 }
