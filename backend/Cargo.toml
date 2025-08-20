@@ -1,0 +1,10 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2024"
+
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tokio-tungstenite = { version = "0.20.1", features = ["__rustls-tls"] }
+futures-util = "0.3.31"
