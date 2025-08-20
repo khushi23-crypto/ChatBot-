@@ -1,75 +1,116 @@
-<<<<<<< HEAD
-# Getting Started with Create React App
+# Real-Time Chat Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A **real-time chat application** built using **Rust (Actix Web, WebSockets)** for the backend and **React (JavaScript)** for the frontend.  
+This project is currently private and not open-source.  
 
-## Available Scripts
+The app allows multiple users to connect and chat in real-time, similar to Slack, Discord, or WhatsApp Web, but simplified for learning and development.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Real-time communication using WebSockets
+- Multiple users can join and chat simultaneously
+- Clean React frontend (JavaScript, not TypeScript)
+- Backend built with **Actix Web (Rust)**
+- Scalable architecture for future improvements
+- Secure JWT-based authentication (planned)
+- Database integration for persistent chat history (planned)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🛠️ Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend
+- **Rust**
+- **Actix Web** (Web framework)
+- **WebSockets** (real-time communication)
+- **SQLx + Postgres** (planned for persistence)
+- **JWT Authentication** (planned)
 
-### `npm run build`
+### Frontend
+- **React (JavaScript)**  
+- **Tailwind CSS** for styling (optional)
+- **WebSocket API** for connecting to backend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📂 Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+chat-app/
+│
+├── backend/                # Rust Actix Web backend
+│   ├── src/
+│   │   ├── main.rs         # Entry point
+│   │   ├── handlers.rs     # WebSocket handlers
+│   │   ├── models.rs       # (Planned) Database models
+│   │   └── auth.rs         # (Planned) JWT authentication
+│   └── Cargo.toml
+│
+├── frontend/               # React frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── App.js
+│   │   ├── components/
+│   │   │   ├── ChatBox.js
+│   │   │   └── Message.js
+│   │   └── utils/
+│   └── package.json
+│
+└── README.md
+```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## ⚡ Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Backend Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Install [Rust](https://www.rust-lang.org/tools/install)  
+2. Navigate to backend folder:
+   ```bash
+   cd backend
+   ```
+3. Run the server:
+   ```bash
+   cargo run
+   ```
+4. Server will run on: `http://localhost:8080`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+### Frontend Setup
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Install [Node.js](https://nodejs.org/)  
+2. Navigate to frontend folder:
+   ```bash
+   cd frontend
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start development server:
+   ```bash
+   npm start
+   ```
+5. Frontend will run on: `http://localhost:3000`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🔮 Future Enhancements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Persistent chat storage with Postgres
+- JWT-based authentication
+- Private rooms / Direct messages
+- User profiles and avatars
+- File sharing
+- Notifications
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📌 Notes
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
-# ChatBot
-An interactive conversational AI chatbot focused on delivering engaging and human-like interactions. Features include [mention specific features, e.g., contextual understanding, sentiment analysis, personalized responses].
->>>>>>> 0b9aa7e3d75b54f7c106d7c1edde9ab19b5ff6de
+- This project is **private** and not open-source (yet).  
+- For development purposes, the focus is on **learning Rust (backend) + React (frontend)** together.
