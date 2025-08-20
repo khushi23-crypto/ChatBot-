@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,3 +69,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+=======
+# ChatBot
+An interactive conversational AI chatbot focused on delivering engaging and human-like interactions. Features include [mention specific features, e.g., contextual understanding, sentiment analysis, personalized responses].
+>>>>>>> 0b9aa7e3d75b54f7c106d7c1edde9ab19b5ff6de
