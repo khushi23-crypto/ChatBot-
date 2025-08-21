@@ -1,26 +1,34 @@
 use futures_util::{SinkExt, StreamExt};
 use tokio_tungstenite::{connect_async, tungstenite::Message};
+use tokio::io::{self, AsyncBufReadExt};
 
 #[tokio::main]
 async fn main() {
-    let url = "ws://127.0.0.1:8080/ws/"; // Connect to your Actix server
-    println!("Connecting to server (socket1)...");
-    
-    let (web_stream, _) = connect_async(url)
-        .await
-        .expect("Cannot connect to server");
-    
+    let url = "ws://127.0.0.1:8080/ws/socket1";
+
+    println!("Connecting to the main web server...");
+    let (web_stream, _) = connect_async(url).await.expect("Can't connect to server");
     let (mut write, mut read) = web_stream.split();
 
-    // Send a single message to the server
-    let msg = Message::Text("Hello from client 1".into());
-    write.send(msg).await.expect("Cannot send message");
+    // Task to read incoming messages
+    tokio::spawn(async move {
+        while let Some(msg) = read.next().await {
+            match msg {
+                Ok(Message::Text(text)) => println!("\nIncoming: {}", text),
+                Ok(_) => {},
+                Err(e) => {
+                    eprintln!("Error reading message: {}", e);
+                    break;
+                }
+            }
+        }
+    });
 
-    // Read the confirmation from the server
-    if let Some(message) = read.next().await {
-        let message = message.expect("Cannot read the message");
-        println!("Server says: {}", message);
+    // Read from stdin and send messages
+    let stdin = io::BufReader::new(io::stdin());
+    let mut lines = stdin.lines();
+
+    while let Ok(Some(line)) = lines.next_line().await {
+        write.send(Message::Text(line)).await.expect("Can't send message");
     }
-
-    println!("Message sent from socket1. Exiting...");
 }
