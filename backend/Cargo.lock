@@ -3,6 +3,19 @@
 version = 4
 
 [[package]]
+name = "ChatBot-"
+version = "0.1.0"
+dependencies = [
+ "actix",
+ "actix-web",
+ "actix-web-actors",
+ "futures-util",
+ "tokio",
+ "tokio-tungstenite",
+ "uuid",
+]
+
+[[package]]
 name = "actix"
 version = "0.13.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -510,19 +523,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "echo-client"
-version = "0.1.0"
-dependencies = [
- "actix",
- "actix-web",
- "actix-web-actors",
- "futures-util",
- "tokio",
- "tokio-tungstenite",
- "uuid",
 ]
 
 [[package]]

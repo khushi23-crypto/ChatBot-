@@ -1,88 +1,80 @@
 use actix::prelude::*;
-use actix_web::{web, App, HttpServer, HttpRequest, HttpResponse};
+use actix_web::{get, web, App, HttpRequest, HttpResponse, HttpServer};
 use actix_web_actors::ws;
+use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
-use uuid::Uuid;
 
-// Shared state to store one client's Addr
-type SharedClient = Arc<Mutex<Option<Addr<MyWs>>>>;
+// Shared clients map
+type Clients = Arc<Mutex<HashMap<String, Addr<ChatSession>>>>;
 
-struct MyWs {
-    id: Uuid,
-    shared: SharedClient,
+// WebSocket actor
+struct ChatSession {
+    id: String, // owned String now
+    clients: Clients,
 }
 
-impl Actor for MyWs {
+impl Actor for ChatSession {
     type Context = ws::WebsocketContext<Self>;
 
     fn started(&mut self, ctx: &mut Self::Context) {
-        let mut shared = self.shared.lock().unwrap();
-        if shared.is_none() {
-            println!("First client connected: {}", self.id);
-            *shared = Some(ctx.address()); // store Addr of first client
-        } else {
-            println!("Second client connected: {}", self.id);
-        }
+        self.clients.lock().unwrap().insert(self.id.clone(), ctx.address());
+        println!("{} connected!", self.id);
     }
 
     fn stopped(&mut self, _: &mut Self::Context) {
-        println!("Client disconnected: {}", self.id);
-        let mut shared = self.shared.lock().unwrap();
-        *shared = None;
+        self.clients.lock().unwrap().remove(&self.id);
+        println!("{} disconnected!", self.id);
     }
 }
 
-// StreamHandler must be imported from actix::prelude
-impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWs {
-    fn handle(&mut self, msg: Result<ws::Message, ws::ProtocolError>, ctx: &mut ws::WebsocketContext<Self>) {
+// Handle incoming WebSocket messages
+impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for ChatSession {
+    fn handle(&mut self, msg: Result<ws::Message, ws::ProtocolError>, ctx: &mut Self::Context) {
         if let Ok(ws::Message::Text(text)) = msg {
-            println!("Received from {}: {}", self.id, text);
+            // Determine target socket
+            let target_id = if self.id == "socket1" { "socket2".to_string() } else { "socket1".to_string() };
 
-            // Forward to the other client if exists
-            let shared = self.shared.lock().unwrap();
-            if let Some(other_addr) = &*shared {
-                if other_addr.connected() && other_addr != &ctx.address() {
-                    other_addr.do_send(SendMessage(text.to_string()));
-                }
+            if let Some(target) = self.clients.lock().unwrap().get(&target_id) {
+                target.do_send(MessageToClient(text.to_string()));
             }
-
-            ctx.text("Message sent!"); // confirmation to sender
         }
     }
 }
 
-// Message type to send to other client
-struct SendMessage(String);
-impl Message for SendMessage {
+// Wrapper to send message to client
+struct MessageToClient(String);
+impl Message for MessageToClient {
     type Result = ();
 }
 
-impl Handler<SendMessage> for MyWs {
+impl Handler<MessageToClient> for ChatSession {
     type Result = ();
 
-    fn handle(&mut self, msg: SendMessage, ctx: &mut ws::WebsocketContext<Self>) {
+    fn handle(&mut self, msg: MessageToClient, ctx: &mut Self::Context) {
         ctx.text(msg.0);
     }
 }
 
-// WebSocket handler
-async fn ws_index(req: HttpRequest, stream: web::Payload, data: web::Data<SharedClient>) -> HttpResponse {
-    let ws = MyWs {
-        id: Uuid::new_v4(),
-        shared: data.get_ref().clone(),
-    };
-    ws::start(ws, &req, stream).unwrap()
+// WebSocket route
+#[get("/ws/{id}")]
+async fn ws_route(req: HttpRequest, stream: web::Payload, data: web::Data<Clients>) -> HttpResponse {
+    // Convert borrowed &str to owned String
+    let id: String = req.match_info().get("id").unwrap().to_string();
+    let session = ChatSession { id, clients: data.get_ref().clone() };
+    ws::start(session, &req, stream).unwrap()
 }
 
+// Main server
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let shared_client: SharedClient = Arc::new(Mutex::new(None));
+    let clients: Clients = Arc::new(Mutex::new(HashMap::new()));
 
-    println!("WebSocket server running on ws://127.0.0.1:8080/ws/");
+    println!("Starting server at ws://127.0.0.1:8080/ws/socket1 and socket2");
+
     HttpServer::new(move || {
         App::new()
-            .app_data(web::Data::new(shared_client.clone()))
-            .route("/ws/", web::get().to(ws_index))
+            .app_data(web::Data::new(clients.clone()))
+            .service(ws_route)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
