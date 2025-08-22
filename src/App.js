@@ -1,5 +1,6 @@
 import Background from './components/Background';
 import Navigationbar from './components/Navigationbar';
+import ChatBox from './components/ChatBox/ChatBox';
 import './App.css'
 import React, { useState } from 'react';
 function App() {
@@ -10,6 +11,7 @@ function App() {
         setDarkMode={setDarkMode} />
       <div className='main-content' >
         <Background darkMode={darkMode}/>
+        <ChatBox darkMode={darkMode} />
       </div>
     </div>
 
