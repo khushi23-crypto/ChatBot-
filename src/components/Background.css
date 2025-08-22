@@ -1,0 +1,20 @@
+.video-section {
+  position: fixed; /* full screen cover */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* sab ke peeche */
+  overflow: hidden;
+}
+.video-section-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.video-section.dark{
+filter: brightness(0.5);
+}
+.video-section.light{
+filter: brightness(1);
+}

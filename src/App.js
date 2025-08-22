@@ -2,7 +2,6 @@ import Background from './components/Background';
 import Navigationbar from './components/Navigationbar';
 import './App.css'
 import React, { useState } from 'react';
-import ChatBox from './components/ChatBox/ChatBox';
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   return (
@@ -11,7 +10,6 @@ function App() {
         setDarkMode={setDarkMode} />
       <div className='main-content' >
         <Background darkMode={darkMode}/>
-        <ChatBox darkMode={darkMode} />
       </div>
     </div>
 
