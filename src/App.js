@@ -1,18 +1,20 @@
 import Background from './components/Background';
-import ChatBox from './components/Chatbox/ChatBox';
 import Navigationbar from './components/Navigationbar';
-import Sidebar from './components/Sidebar/Sidebar'
 import './App.css'
+import React, { useState } from 'react';
+import ChatBox from './components/ChatBox/ChatBox';
 function App() {
+  const [darkMode, setDarkMode] = useState(false);
   return (
     <div className="App">
-      <Navigationbar />
-      <Background />
-      <div className='main-content'>
-        <Sidebar />
-        <ChatBox />
+      <Navigationbar darkMode={darkMode}
+        setDarkMode={setDarkMode} />
+      <div className='main-content' >
+        <Background darkMode={darkMode}/>
+        <ChatBox darkMode={darkMode} />
       </div>
     </div>
+
   );
 }
 

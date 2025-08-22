@@ -1,10 +1,4 @@
 .main-content {
-  display: flex;
-  height: calc(100vh - 60px); /* Navbar height ke hisaab se adjust karo */
-  position: relative;
-  z-index: 2; /* Background ke upar aaye */
-}
+  height: 100vh; 
 
-.chatbox {
-  flex: 1; /* Bacha hua space le */
 }

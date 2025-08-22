@@ -7,9 +7,7 @@ import Button from 'react-bootstrap/Button';
 import React, { useState } from 'react';
 import Logo from "../images/chatbot.png";
 
-
-function Navigationbar(props) {
-    const [darkMode, setDarkMode] = useState(false);
+function Navigationbar({darkMode, setDarkMode}) {
     const [showLogin, setShowLogin] = useState(false);
     const toggleTheme = () => {
         setDarkMode(!darkMode);
