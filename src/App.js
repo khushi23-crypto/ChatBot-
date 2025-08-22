@@ -10,37 +10,43 @@ function App() {
   const [messageText, setMessageText] = useState('');
   const [selectedUser, setSelectedUser] = useState('Kajal');
 
-  const appID = 596685901;
-  const tokenA = "04AAAAAGiqCJQADEAtDWFcv986FjHlDgCuCe2LQd9wtZaIadRLErolGFYhh6VYa/DDHKHkNrGy2sGlurX9LFe5W+4zoPYcRUJ8UHXa4B+R+QUrRk0qaD0CLgGVy4/Zco6CQ/sQ/iWwvVbH+xGMZmaT9aIf9+4jkYDCfmIZmjApmEgk7O5vch6WRMgsPURh+ZpuYtL38zWNVR2esoJSJRFYMosVdpejjjjoVrYszE6D6sUhNySJQAE8O+VNcjJc1eFyQwOihtPTAQ==";
-  const tokenB = "04AAAAAGiqCK4ADJri5d0yW7YEcbj4VQCvu9MTZk37rzQMXQ7XY1ln4a/jBQ+/KSJIOqIMOqN3FtXXpiqRAealV5BWQVV4HMd1m8vIYF+TmH06CZVevxJS4zSDttdbWobg62QcvK5L3Unv+oMnJXa9VPHGvWAD0Ev54+j4BEQY5ULM1BbQGmWIh6hM/n/tZvCsNOfU8dXWLO43jOHIP/7qeklmRh5PZCqDKJ3PZmMvGiV8jR35gry29hiMy2DtR4dX3Ji0TKDxHQE=";
-  const messageEndRef = useRef(null);
+  const appID = Number(process.env.REACT_APP_APP_ID);
+  const tokenA = process.env.REACT_APP_TOKEN_A;
+const tokenB = process.env.REACT_APP_TOKEN_B;
+const messageEndRef = useRef(null);
+useEffect(() => {
+  if (!appID) {
+    console.error("AppID not found! Please check your .env file");
+    return;
+  }
+    const token = selectedUser === "Kajal" ? tokenA : tokenB;
 
-  useEffect(() => {
-    const instance = ZIM.create(appID);
-    setZimInstance(instance);
-    instance.on('error', function (_instance, errorInfo) { }); instance.on('connectionStateChanged', function (zim, { state, event }) { });
+  const instance = ZIM.create({
+    appID: Number(appID),    // Make sure it's a number
+    userID: selectedUser,    // Optional at creation, can set at login
+    userName: selectedUser,
+    token: token
+  });
 
-    instance.on('peerMessageReceived', (_instance, { messageList }) => {
-      setMessages(prev => [...prev,...messageList]);
-    });
+  setZimInstance(instance);
 
-    instance.on('tokenWillExpire', (_instance, { second }) => {
-      console.log('tokenWillExpire', second);
+  instance.on('error', (_instance, errorInfo) => {
+    console.error(errorInfo)
+  });
 
+  instance.on('peerMessageReceived', (_instance, { messageList }) => {
+    setMessages(prev => [...prev, ...messageList]);
+  });
 
-      instance.renewToken(selectedUser === "Kajal" ? tokenA : tokenB)
-        .then(function () {
+  instance.on('tokenWillExpire', (_instance, { second }) => {
+    const renewToken = selectedUser === "Kajal" ? tokenA : tokenB;
+    instance.renewToken(renewToken).catch(console.error);
+  });
 
-        })
-        .catch(function (err) {
-
-        })
-    });
-
-    return () => {
-      instance.destroy();
-    };
-  }, []);
+  return () => {
+    instance.destroy();
+  };
+}, [appID, selectedUser,tokenA , tokenB]);
 
   useEffect(() => {
     if (messageEndRef.current) {
